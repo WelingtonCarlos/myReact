@@ -1,0 +1,16 @@
+.button {
+  width: 100%;
+  background: darkblue;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  cursor: pointer;
+}
+.button:hover {
+  transform: scale(1.05);
+}
+
+.button:disabled {
+  background: rgba(132, 204, 252, 0.493);
+  cursor: not-allowed;
+}
