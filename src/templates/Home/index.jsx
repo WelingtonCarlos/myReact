@@ -4,6 +4,7 @@ import { Component } from "react";
 import { loadPosts } from "../../utils/load-posts";
 import { Users } from "../../components/Users";
 import { Button } from "../../components/Button";
+import { TextInput } from "../../components/TextInput";
 
 export class Home extends Component {
   state = {
@@ -11,7 +12,8 @@ export class Home extends Component {
     /* posts */ users: [],
     allUsers: [],
     page: 0,
-    usersPerPage: 200,
+    usersPerPage: 10,
+    searchValue: "",
   };
 
   // data fetching
@@ -50,20 +52,44 @@ export class Home extends Component {
     this.setState({ users, page: nextPage });
   };
 
+  handleChange = (e) => {
+    const { value } = e.target;
+    this.setState({ searchValue: value });
+  };
+
   render() {
-    const { users, page, usersPerPage, allUsers } = this.state;
+    const { users, page, usersPerPage, allUsers, searchValue } = this.state;
     const noMoreUsers = page + usersPerPage >= allUsers.length;
+
+    const filteredUsers = !!searchValue
+      ? allUsers.filter((user) => {
+          return user.name.toLowerCase().includes(searchValue.toLowerCase());
+        })
+      : users;
 
     return (
       <section className="container">
-        <Users users={users} />
+        <div className="search-container">
+          {!!searchValue && <h1>Buscar: {searchValue}</h1>}
+        </div>
+
+        <TextInput searchValue={searchValue} handleChange={this.handleChange} />
+
+        <br />
+        <br />
+        <br />
+
+        {filteredUsers.length > 0 && <Users users={filteredUsers} />}
+        {filteredUsers.length === 0 && <p>USUÁRIO NÃO ENCONTRADO !!! XD XD</p>}
 
         <div className="button-container">
-          <Button
-            text="Carregar mais Usuários!"
-            onClick={this.loadMoreUsers}
-            disabled={noMoreUsers}
-          />
+          {!searchValue && (
+            <Button
+              text="Carregar mais Usuários!"
+              onClick={this.loadMoreUsers}
+              disabled={noMoreUsers}
+            />
+          )}
         </div>
       </section>
     );
