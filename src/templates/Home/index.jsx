@@ -12,7 +12,7 @@ export class Home extends Component {
     /* posts */ users: [],
     allUsers: [],
     page: 0,
-    usersPerPage: 10,
+    usersPerPage: 5,
     searchValue: "",
   };
 
